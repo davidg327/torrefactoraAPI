@@ -82,7 +82,14 @@ async function updateTask(req, res){
         existingTask.priorityId = priorityId;
         existingTask.statusId = statusId;
         await existingTask.save();
-        res.status(200).json({ message: 'Tarea actualizada correctamente' });
+        const taskWithRelations = await Tasks.findOne({
+            where: { id: existingTask.id },
+            include: [
+                { model: Priority, attributes: ['id', 'name'] },
+                { model: Status, attributes: ['id', 'name'] }
+            ]
+        });
+        res.status(200).json(taskWithRelations);
     } catch (error) {
         res.status(500).json({ message: 'Hubo un error al actualizar la tarea'});
     }
