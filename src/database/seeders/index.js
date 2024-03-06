@@ -22,7 +22,6 @@ async function Seeders(){
 
         await Promise.all(dataPriority.map(priority => Priority.create(priority)));
         await Promise.all(dataStatus.map(status => Status.create(status)));
-        console.log('Datos quemados insertados correctamente');
     } catch (error) {
         console.error('Error al insertar datos quemados:', error);
     }
