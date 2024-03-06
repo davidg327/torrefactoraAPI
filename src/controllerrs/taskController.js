@@ -1,4 +1,6 @@
 const Tasks = require('../database/models/tasks');
+const Priority = require('../database/models/priority');
+const Status = require('../database/models/status');
 
 async function createTask(req, res) {
     const {name, description, beginDate, endDate, duration, priorityId, statusId} = req.body;
@@ -12,7 +14,24 @@ async function createTask(req, res) {
             priorityId,
             statusId
         });
-        res.status(201).json(newTask);
+        const taskWithRelations = await Tasks.findOne({
+            where: { id: newTask.id },
+            include: [
+                { model: Priority, attributes: ['id', 'name'] },
+                { model: Status, attributes: ['id', 'name'] }
+            ]
+        });
+        const response = {
+            id: taskWithRelations.id,
+            name: taskWithRelations.name,
+            description: taskWithRelations.description,
+            beginDate: taskWithRelations.beginDate,
+            endDate: taskWithRelations.endDate,
+            duration: taskWithRelations.duration,
+            priority: taskWithRelations.priority,
+            status: taskWithRelations.status
+        };
+        res.status(201).json(response);
     } catch (error) {
         res.status(500).json({ message: error });
     }
@@ -20,8 +39,21 @@ async function createTask(req, res) {
 
 async function getTasks(req, res) {
     try {
-        const status = await Tasks.findAll();
-        res.status(201).json(status);
+        const tasks = await Tasks.findAll(
+            {
+                include: [
+                    {
+                        model: Priority,
+                        attributes: ['id', 'name']
+                    },
+                    {
+                        model: Status,
+                        attributes: ['id', 'name']
+                    }
+                ]
+            }
+        );
+        res.status(201).json(tasks);
     } catch (error) {
         res.status(500).json({ message: error });
     }

@@ -1,9 +1,11 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../mysqlModel');
 const Priority = require('./priority');
 const Status = require('./status');
 
-const Tasks = sequelize.define('tasks', {
+class Task extends Model {}
+
+Task.init({
     name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -38,7 +40,12 @@ const Tasks = sequelize.define('tasks', {
         },
     },
 }, {
-    timestamps: false
+    sequelize,
+    timestamps: false,
+    modelName: 'tasks',
 });
 
-module.exports = Tasks;
+Task.belongsTo(Priority);
+Task.belongsTo(Status);
+
+module.exports = Task;
