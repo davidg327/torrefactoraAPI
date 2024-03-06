@@ -70,8 +70,28 @@ async function deleteTask(req, res){
     }
 }
 
+async function updateTask(req, res){
+    try {
+        const { id, name, description, beginDate, endDate, duration, priorityId, statusId } = req.body;
+        const existingTask = await Tasks.findOne({ where: { id: id } });
+        existingTask.name = name;
+        existingTask.description = description;
+        existingTask.beginDate = beginDate;
+        existingTask.endDate = endDate;
+        existingTask.duration = duration;
+        existingTask.priorityId = priorityId;
+        existingTask.statusId = statusId;
+        await existingTask.save();
+        res.status(200).json({ message: 'Tarea actualizada correctamente' });
+    } catch (error) {
+        res.status(500).json({ message: 'Hubo un error al actualizar la tarea'});
+    }
+}
+
+
 module.exports = {
     createTask,
     getTasks,
     deleteTask,
+    updateTask
 };
