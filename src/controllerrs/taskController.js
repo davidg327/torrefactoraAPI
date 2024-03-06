@@ -59,7 +59,19 @@ async function getTasks(req, res) {
     }
 }
 
+async function deleteTask(req, res){
+    try {
+        const { id } = req.body;
+        const existingTask = await Tasks.findOne({ where: { id: id } });
+        await existingTask.destroy();
+        res.status(200).json({ message: 'Tarea eliminado correctamente' });
+    } catch (error) {
+        res.status(500).json({ message: 'Hubo un error al eliminar la tarea'});
+    }
+}
+
 module.exports = {
     createTask,
     getTasks,
+    deleteTask,
 };

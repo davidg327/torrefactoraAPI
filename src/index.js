@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 const seeders = require('../src/database/seeders/index');
 const tasksRoutes = require('./routes/tasksRoutes');
 const statusRoutes = require('./routes/statusRoutes');
@@ -10,6 +11,9 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors());
+
+// Configura morgan para que registre las solicitudes HTTP
+app.use(morgan('dev'));
 
 const port = process.env.PORT || 3000;
 
