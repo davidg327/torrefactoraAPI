@@ -3,10 +3,13 @@ const seeders = require('../src/database/seeders/index');
 const tasksRoutes = require('./routes/tasksRoutes');
 const statusRoutes = require('./routes/statusRoutes');
 const priorityRoutes = require('./routes/priorityRoutes');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const app = express();
+
+app.use(cors());
 
 const port = process.env.PORT || 3000;
 
