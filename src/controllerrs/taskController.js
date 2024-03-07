@@ -53,7 +53,8 @@ async function getTasks(req, res) {
                 ]
             }
         );
-        res.status(201).json(tasks);
+        const sortedData = tasks.sort((a, b) => b.id - a.id);
+        res.status(201).json(sortedData);
     } catch (error) {
         res.status(500).json({ message: error });
     }
