@@ -28,10 +28,10 @@ app.listen(port, () => {
 });
 
 
-/*(async () => {
+(async () => {
     try {
         await seeders();
     } catch (error) {
         console.error('Error al realizar la migración:', error);
     }
-})();*/
+})();
